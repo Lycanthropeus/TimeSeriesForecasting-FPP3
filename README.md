@@ -1,1 +1,3 @@
-# TimeSeriesForecasting-FPP3
+# Forecasting Principles and Practice
+
+This repo documents my learnings from the book popularly referred to as (FPP3)[otexts.com/fpp3].
