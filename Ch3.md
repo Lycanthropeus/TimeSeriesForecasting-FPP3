@@ -76,3 +76,36 @@ autoplot(seats_dcmp) +
 ![alt text](images/seats_decomposition.png)
 
 
+### STL Decomposition
+
+```
+us_retail_employment |>
+  model(
+    STL(Employed ~ trend(window = 7) +
+                   season(window = "periodic"),
+    robust = TRUE)) |>
+  components() |>
+  autoplot()
+
+```
+STL decomposition is quite robust, possesses some advantages over the X-11 and other techniques used by the statistics agencies.
+![alt text](images/stl_decomposition_trend_7.png)
+
+Main parameters to be chosen are the trend window and the season window. By default, the seasonal window is chosen as 11. By tweaking this, you can ensure your residual is pure white noise.
+
+If you plot the ACF of the remainder component of the above decomposition:
+
+```
+ us_retail_employment |>
++     model(
++         STL(Employed ~ trend(window = 7) +
++                 season(window = "periodic"),
++             robust = TRUE)) |>
++     components() |> select(remainder) |> ACF(remainder) |> autoplot()
+```
+
+you obtain the following plot:
+![alt text](images/acf_of_stl_decomp.png)
+
+
+Due to the presence of peaks outside the permissible limit, we can conclude that the decomposition has not sufficiently filtered out the signal from the original time series. Changing some parameters in the STL decomposition, will, therefore, give better results (white noise residuals).
